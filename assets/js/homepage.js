@@ -1,4 +1,4 @@
-// Globals
+// GLOBALS
 
 // store the elements related to the city search
 var citySearch = document.querySelector(".city-search");
@@ -18,3 +18,143 @@ var currentUVIndex = document.querySelector("uv-index");
 
 //the API key to access the OpenWeatherAPI
 const API_KEY = "3e489ce8dda72471348fca8795447d05";
+
+//  MAIN
+
+//when the search button is clicked 
+searchBTN.addEventListener("click", function() {
+    apiCalls(citySearch.value);
+
+})
+
+// When the search bar is clicked into.
+citySearch.addEventListener("focus", function() {
+    // Clear any previous text.
+    citySearch.value = "";
+})
+
+//clear the search history
+clearBTN.addEventListener("click", function() {
+    searchHistory = [];
+    localStorage.clear();
+    while (historyContainer.firstChild) {
+        historyContainer.removeChild(historyContainer.firstChild);
+    }
+})
+
+// When the page loads/reloads.
+window.addEventListener("load", function() {
+    // Get the list of cities from local storage.
+    var entry = JSON.parse(localStorage.getItem("searchHistory"))
+        // If the list is not null make the history the list from storage.
+        // If the list is null make the history blank.
+    searchHistory = (entry) ? entry : [];
+
+    // Create the new elements for each item in history.
+    for (i = 0; i < searchHistory.length; i++) {
+        createEle(searchHistory[i]);
+    }
+    // Call the API for the most recently added city.
+    if (entry) {
+        apiCalls(searchHistory[searchHistory.length - 1]);
+    }
+})
+
+// FUNCTIONS
+// used to call the openWeather API.
+function apiCalls(city) {
+    // call the API
+    // this call gets the name/latitude/longitude of the city
+    fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid" + API_KEY)
+        .then(response => response.json())
+        .then(data => {
+            // Store the name/latitude/longitude in variables
+            cityName.textContent = data['name'];
+            var lon = data['coord']['lon'];
+            var lat = data['coord']['lon'];
+            // make a new API call
+            // purpose is to get all of the weather data
+            // a different call is needed to get all of the weather data
+            fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + API_KEY + "units-imperial")
+                .then(response => response.json())
+                .then(data => {
+                    // log all of data from our API call
+                    console.log(data);
+
+                    storeSearch(city);
+
+                    // Set the url for weather Icon.
+                    var weatherIcon = data['current']['weather']['0']['icon'];
+                    var iconURL = "https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png";
+
+                    // Get the current date.
+                    var date = new Date(data['current']['dt'] * 1000).toLocaleDateString();
+                    cityName.innerHTML += " " + date + "<img src=" + iconURL + ">";
+
+                    // Start retrieving all of the required weather data.
+                    currentTemp.textContent = data['current']['temp'] + "°F";
+                    currentHumid.textContent = data['current']['humidity'] + "%";
+                    currentWindSpeed.textContent = data['current']['wind_speed'] + "mph";
+
+                    // Logic for the UV Index indicator
+                    var uvi = data['current']['uvi'];
+                    var uviIndicator = ""
+                        // these tags use bootstrap to change the color of the UV Index element.
+                    if (uvi <= 2) {
+                        uviIndicator = "bg-success";
+                    } else if (uvi > 2 && uvi <= 5) {
+                        uviIndicator = "bg-warning";
+                    } else if (uvi > 5) {
+                        uviIndicator = "bg-danger";
+                    }
+
+                    // Remove any of the tags from previous searches.
+                    currentUVIndex.classList.remove("bg-success");
+                    currentUVIndex.classList.remove("bg-warning");
+                    currentUVIndex.classList.remove("bg-danger");
+
+                    //add the class to the element
+                    currentUVIndex.classList.add(uviIndicator);
+                    currentUVIndex.textContent = uvi;
+
+                    //collect data for the future forecast
+                    futureForecast(data);
+                })
+
+        })
+}
+
+// store the search history in both an array, and in Local Storage
+function storeSearch(city) {
+    // If the array does NOT(!) contain the city.
+    if (!searchHistory.includes(city)) {
+        // Add the city to the array.
+        searchHistory.push(city);
+        // Create a new element that goes into the search history container.
+        createEle(city);
+    }
+    // Store the array in local storage.
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+    console.log(searchHistory);
+}
+
+// create a new element for the newly searched city
+function createEle(value) {
+    // create a new list element
+    var newEle = document.createElement("li");
+    // add this class tag for use in css
+    newEle.classList.add("prev-search");
+    // add this class tag for bootstrap use
+    newEle.classList.add("list-group-item");
+    // update the text content of the new element to the city name
+    newEle.textContent = value.toUpperCase();
+
+    // add the new element to the container
+    historyContainer.appendChild(newEle);
+
+    // add eventListener for click to new element
+    newEle.addEventListener("click", function() {
+        // calls he API
+        apiCalls(newEle.textContent.toLowerCase());
+    })
+}
