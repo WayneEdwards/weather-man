@@ -5,11 +5,105 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets\style\style.css">
+    <title>Weather Forecast Dashboard</title>
 </head>
 
 <body>
+    <div class="jumbotron">
+        <h1 class="title">Weather Forecast Dashboard</h1>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <!-- container for all search elements-->
+            <div class="search-container col-sm-4">
+                <h4 style="font-weight:bold;">Search For A City</h4>
+                <!--container for input-->
+                <div class="input-container">
+                    <input type="text" class="city-search" placeholder="Enter A City">
+                    <button class="search-button btn btn-primary">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+                <button class="clear-history-button btn btn-primary">Clear History</button>
+                <!-- All the previously searched cities will go here -->
+                <u1 class="history-container">
+
+                </u1>
+
+            </div>
+            <!-- weather detail boxes -->
+            <div class="col-sm-8">
+                <div class="row current-city">
+                    <div class="col-sm-12">
+                        <h3 class="name"></h3>
+                        <p>Temperature:
+                            <span class="current-weather" id="temperature"></span>
+                        </p>
+                        <h3 class="name"></h3>
+                        <p>Humidity:
+                            <span class="current-weather" id="humidity"></span>
+                        </p>
+                        <h3 class="name"></h3>
+                        <p>Wind Speed:
+                            <span class="current-weather" id="wind-speed"></span>
+                        </p>
+                        <h3 class="name"></h3>
+                        <p>UV Index:
+                            <span class="current-weather bg-danger" id="uv-index"></span>
+                        </p>
+                    </div>
+                </div>
+                <!-- container for the forecast of the city -->
+                <div class="col-sm-12 future">
+                    <h3>5-Day Forecast</h3>
+                    <div class="row">
+                        <div class="col-sm-2 bg-primary forecast">
+                            <p id="forecastDate0"></p>
+                            <p id="forecastImg0">
+                                <p>Temp:<span id="forecastTemp0"></span></p>
+                                <p>Humidity:<span id="fircastHumidity0"></span>
+                                </p>
+                        </div>
+                        <div class="col-sm-2 bg-primary forecast">
+                            <p id="forecastDate1"></p>
+                            <p id="forecastImg1">
+                                <p>Temp:<span id="forecastTemp1"></span></p>
+                                <p>Humidity:<span id="fircastHumidity1"></span>
+                                </p>
+                        </div>
+                        <div class="col-sm-2 bg-primary forecast">
+                            <p id="forecastDate2"></p>
+                            <p id="forecastImg2">
+                                <p>Temp:<span id="forecastTemp2"></span></p>
+                                <p>Humidity:<span id="fircastHumidity2"></span>
+                                </p>
+                        </div>
+                        <div class="col-sm-2 bg-primary forecast">
+                            <p id="forecastDate3"></p>
+                            <p id="forecastImg3">
+                                <p>Temp:<span id="forecastTemp3"></span></p>
+                                <p>Humidity:<span id="fircastHumidity3"></span>
+                                </p>
+                        </div>
+                        <div class="col-sm-2 bg-primary forecast">
+                            <p id="forecastDate4"></p>
+                            <p id="forecastImg4">
+                                <p>Temp:<span id="forecastTemp4"></span></p>
+                                <p>Humidity:<span id="fircastHumidity4"></span>
+                                </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 </body>
+<script src="assets\js\homepage.js"></script>
 
 </html>
