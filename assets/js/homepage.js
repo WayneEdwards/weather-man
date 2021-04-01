@@ -5,19 +5,19 @@ var citySearch = document.querySelector(".city-search");
 var searchBTN = document.querySelector(".search-button");
 
 //store the elements related to the search history
-var clearBTN = document.querySelector(".clear-history button");
+var clearBTN = document.querySelector(".clear-history-button");
 var historyContainer = document.querySelector(".history-container");
 var searchHistory = [];
 
 //store the elements related to the current city/weather
 var cityName = document.querySelector(".name");
-var currentTemp = document.querySelector("temperature");
-var currentHumid = document.querySelector("humidity");
-var currentWindSpeed = document.querySelector("wind-speed");
-var currentUVIndex = document.querySelector("uv-index");
+var currentTemp = document.getElementById("temperature");
+var currentHumid = document.getElementById("humidity");
+var currentWindSpeed = document.getElementById("wind-speed");
+var currentUVIndex = document.getElementById("uv-index");
 
 //the API key to access the OpenWeatherAPI
-const API_KEY = "3e489ce8dda72471348fca8795447d05";
+const API_KEY = "d1d2d139815a0fc7a14a43dbc0270ec7";
 
 //  MAIN
 
@@ -157,4 +157,31 @@ function createEle(value) {
         // calls he API
         apiCalls(newEle.textContent.toLowerCase());
     })
+}
+
+// Gather weather data for the future forecast.
+function futureForecast(data) {
+    // Max number of days that will be forecasted.
+    const MAX_FORECAST = 5;
+    // Go through each of the days.
+    for (i = 0; i < MAX_FORECAST; i++) {
+        // Get each element needed for that day.
+        var currDate = document.getElementById("forecastDate" + i);
+        var currIcon = document.getElementById("forecastImg" + i);
+        var currTemp = document.getElementById("forecastTemp" + i);
+        var currHumid = document.getElementById("forecastHumidity" + i);
+
+        // Create the new date for the current day.
+        var date = new Date(data["daily"][i]['dt'] * 1000).toLocaleDateString();
+        currDate.textContent = date;
+
+        // Get the weather icon to be used for the current day.
+        var weatherIcon = data['daily'][i]['weather']['0']['icon'];
+        var iconURL = "https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png";
+        currIcon.innerHTML = "<img src=" + iconURL + ">";
+
+        // Gather the temperature and humidity for the current day.
+        currTemp.textContent = data['daily'][i]['temp']['day'] + "°F";
+        currHumid.textContent = data['daily'][i]['humidity'] + "%";
+    }
 }
