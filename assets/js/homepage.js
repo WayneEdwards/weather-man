@@ -71,7 +71,7 @@ function apiCalls(city) {
             // Store the name/latitude/longitude in variables
             cityName.textContent = data['name'];
             var lon = data['coord']['lon'];
-            var lat = data['coord']['lon'];
+            var lat = data['coord']['lat'];
             // make a new API call
             // purpose is to get all of the weather data
             // a different call is needed to get all of the weather data
