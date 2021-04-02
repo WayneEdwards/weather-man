@@ -14,10 +14,10 @@ var cityName = document.querySelector(".name");
 var currentTemp = document.getElementById("temperature");
 var currentHumid = document.getElementById("humidity");
 var currentWindSpeed = document.getElementById("wind-speed");
-var currentUVIndex = document.getElementById("uv-index");
+var currentUVIndex = document.getElementById("UV-index");
 
 //the API key to access the OpenWeatherAPI
-const API_KEY = "d1d2d139815a0fc7a14a43dbc0270ec7";
+const API_KEY = "fda3bbee5acedc361f25a706e7be6dd7";
 
 //  MAIN
 
@@ -65,7 +65,7 @@ window.addEventListener("load", function() {
 function apiCalls(city) {
     // call the API
     // this call gets the name/latitude/longitude of the city
-    fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid" + API_KEY)
+    fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + API_KEY)
         .then(response => response.json())
         .then(data => {
             // Store the name/latitude/longitude in variables
@@ -75,7 +75,7 @@ function apiCalls(city) {
             // make a new API call
             // purpose is to get all of the weather data
             // a different call is needed to get all of the weather data
-            fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + API_KEY + "units-imperial")
+            fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + API_KEY + "&units=imperial")
                 .then(response => response.json())
                 .then(data => {
                     // log all of data from our API call
