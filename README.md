@@ -1,5 +1,7 @@
 # weather-man
 Weather Dashboard Challenge #6!
+![Weather Dashboard Screenshot](https://user-images.githubusercontent.com/71949043/113489239-f35e6180-9477-11eb-87be-6699f00b851b.png)
+
 
 USER STORY
 AS A traveler
